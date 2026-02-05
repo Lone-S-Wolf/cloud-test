@@ -19,13 +19,6 @@ jobs:
           gcloud auth activate-service-account --key-file=gcp-key.json
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VM_NAME }} >> ~/.ssh/known_hosts
-
       - name: Deploy to VM
         run: |
           ssh ${{ secrets.VM_USER }}@${{ secrets.VM_NAME }} << 'EOF'
